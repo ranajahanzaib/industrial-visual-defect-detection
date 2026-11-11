@@ -1,0 +1,399 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap");
+:root {
+  font-family: "DM Sans", sans-serif;
+  color: #e9eee9;
+  background: #101512;
+  font-synthesis: none;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+}
+main {
+  max-width: 1440px;
+  margin: auto;
+  padding: 0 54px;
+}
+header {
+  height: 82px;
+  border-bottom: 1px solid #27302b;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.logo {
+  width: 38px;
+  height: 38px;
+  border: 1px solid #45554a;
+  border-radius: 10px;
+  color: #a9e86b;
+  display: grid;
+  place-items: center;
+}
+.brand b {
+  font: 800 15px Manrope;
+  letter-spacing: 1.4px;
+}
+.brand b span {
+  color: #a9e86b;
+}
+.brand small {
+  display: block;
+  font: 9px "DM Mono";
+  color: #7c8a80;
+  letter-spacing: 1px;
+  margin-top: 4px;
+}
+.top-status,
+.eyebrow,
+label,
+.pill,
+nav span,
+footer,
+.note > b {
+  font: 10px "DM Mono";
+  letter-spacing: 1.15px;
+  color: #849188;
+}
+.top-status {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+.top-status i {
+  width: 6px;
+  height: 6px;
+  background: #a9e86b;
+  border-radius: 50%;
+}
+.intro {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  padding: 58px 0 42px;
+}
+.eyebrow {
+  color: #a9e86b;
+}
+.eyebrow span {
+  color: #57635b;
+  margin: 0 7px;
+}
+h1 {
+  font: 700 clamp(38px, 5vw, 61px)/1.04 Manrope;
+  letter-spacing: -2.4px;
+  margin: 22px 0 14px;
+}
+h1 em {
+  font-style: normal;
+  color: #a9e86b;
+}
+.intro p {
+  color: #929e95;
+  line-height: 1.65;
+  max-width: 560px;
+  font-size: 14px;
+}
+.intro-stat {
+  border: 1px solid #303a33;
+  background: #151c17;
+  padding: 18px 22px;
+  min-width: 225px;
+  margin-bottom: 5px;
+}
+.intro-stat span,
+.intro-stat small {
+  display: block;
+  font: 10px "DM Mono";
+  color: #819087;
+}
+.intro-stat b {
+  display: block;
+  font: 600 20px Manrope;
+  color: #a9e86b;
+  margin: 9px 0;
+}
+.intro-stat small {
+  font: 11px "DM Sans";
+}
+nav {
+  display: flex;
+  gap: 25px;
+  align-items: center;
+  border-bottom: 1px solid #27302b;
+  height: 53px;
+}
+nav button {
+  height: 53px;
+  background: none;
+  border: 0;
+  color: #78847c;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 4px;
+  font: 12px "DM Sans";
+  cursor: pointer;
+}
+nav button.active {
+  color: #dce6dd;
+  border-bottom: 2px solid #a9e86b;
+}
+nav button.active svg {
+  color: #a9e86b;
+}
+nav span {
+  margin-left: auto;
+}
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.7fr) minmax(290px, 0.8fr);
+  gap: 18px;
+  padding: 22px 0;
+}
+.panel {
+  background: #151c17;
+  border: 1px solid #2a342d;
+  border-radius: 5px;
+}
+.inspector {
+  padding: 22px;
+}
+.panel-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.panel-head label,
+.verdict > label {
+  color: #a9e86b;
+}
+.panel h2 {
+  font: 600 18px Manrope;
+  margin: 8px 0;
+}
+.pill {
+  font-size: 9px;
+  border: 1px solid #36433a;
+  color: #9caf9d;
+  padding: 6px 9px;
+  border-radius: 2px;
+}
+.controls {
+  display: flex;
+  align-items: end;
+  gap: 12px;
+  margin: 22px 0;
+}
+.controls > label {
+  display: grid;
+  gap: 8px;
+  flex: 1;
+  font-size: 9px;
+}
+.controls select,
+.upload span {
+  width: 100%;
+  height: 40px;
+  background: #101612;
+  color: #cbd4cc;
+  border: 1px solid #354139;
+  border-radius: 3px;
+  padding: 0 10px;
+  font: 11px "DM Sans";
+}
+.upload {
+  min-width: 150px;
+}
+.upload input {
+  display: none;
+}
+.upload span {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+.inspect {
+  height: 40px;
+  background: #a9e86b;
+  color: #172113;
+  border: 0;
+  border-radius: 3px;
+  padding: 0 15px;
+  font: 600 11px "DM Sans";
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+.inspect:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.image-view {
+  position: relative;
+  min-height: 345px;
+  background: #0d120f;
+  border: 1px dashed #344038;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+.image-view img {
+  max-width: 100%;
+  max-height: 510px;
+  object-fit: contain;
+}
+.overlay {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  background: #101512dd;
+  color: #a9e86b;
+  padding: 9px 12px;
+  font: 10px "DM Mono";
+}
+.empty {
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  color: #647168;
+}
+.empty b {
+  font: 500 13px Manrope;
+  color: #9ca89e;
+}
+.empty span {
+  font-size: 11px;
+}
+.target {
+  font-size: 33px;
+  color: #59675c;
+}
+.grid aside {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.verdict {
+  padding: 22px;
+}
+.verdict-icon {
+  margin-top: 23px;
+  width: 43px;
+  height: 43px;
+  border: 1px solid #425a3a;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: #a9e86b;
+}
+.verdict-icon.warn {
+  color: #f0b35f;
+  border-color: #765b36;
+}
+.verdict h2 {
+  font: 700 25px Manrope;
+  letter-spacing: 1px;
+  margin: 13px 0 5px;
+  color: #a9e86b;
+}
+.verdict p,
+.note p {
+  font-size: 11px;
+  color: #87948a;
+  line-height: 1.6;
+  margin: 0 0 20px;
+}
+.metric {
+  padding: 12px 0;
+  border-top: 1px solid #2a342d;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.metric span {
+  font: 9px "DM Mono";
+  color: #849188;
+}
+.metric b {
+  font: 500 13px "DM Mono";
+  color: #dfe7e0;
+}
+.note {
+  border-left: 2px solid #a9e86b;
+  background: #182019;
+  padding: 15px 17px;
+}
+.note > b {
+  color: #a9e86b;
+}
+.note p {
+  margin: 9px 0 0;
+}
+footer {
+  border-top: 1px solid #27302b;
+  padding: 20px 0 28px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 9px;
+}
+@media (max-width: 850px) {
+  main {
+    padding: 0 20px;
+  }
+  .intro {
+    display: block;
+    padding: 40px 0 28px;
+  }
+  .intro-stat {
+    margin-top: 20px;
+  }
+  .grid {
+    grid-template-columns: 1fr;
+  }
+  .controls {
+    flex-wrap: wrap;
+  }
+  .controls > * {
+    min-width: calc(50% - 6px);
+  }
+  .image-view {
+    min-height: 280px;
+  }
+  nav {
+    gap: 15px;
+  }
+}
+@media (max-width: 520px) {
+  header {
+    height: 70px;
+  }
+  .brand small {
+    font-size: 7px;
+  }
+  .intro h1 {
+    font-size: 42px;
+  }
+  .inspector,
+  .verdict {
+    padding: 16px;
+  }
+  .controls > * {
+    min-width: 100%;
+  }
+  footer {
+    gap: 12px;
+    flex-direction: column;
+  }
+}
