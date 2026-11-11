@@ -20,7 +20,12 @@ from industrial_visual_defect_detection.models import (
     feature_map_scales,
     feature_maps,
 )
-from industrial_visual_defect_detection.utils import atomic_json, choose_device, environment, seed_everything
+from industrial_visual_defect_detection.utils import (
+    atomic_json,
+    choose_device,
+    environment,
+    seed_everything,
+)
 
 
 def _epoch(loader: DataLoader, teacher: Teacher, student: Student, device: torch.device, optimizer: torch.optim.Optimizer | None) -> tuple[float, list[float]]:

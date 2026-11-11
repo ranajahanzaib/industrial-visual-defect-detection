@@ -12,7 +12,13 @@ from safetensors.torch import save_file
 from industrial_visual_defect_detection.api.schemas import PredictionResponse
 from industrial_visual_defect_detection.data import image_transform
 from industrial_visual_defect_detection.inference import Detector
-from industrial_visual_defect_detection.models import Student, Teacher, distillation_loss, feature_map_scales, feature_maps
+from industrial_visual_defect_detection.models import (
+    Student,
+    Teacher,
+    distillation_loss,
+    feature_map_scales,
+    feature_maps,
+)
 from industrial_visual_defect_detection.utils import atomic_json, seed_everything
 
 

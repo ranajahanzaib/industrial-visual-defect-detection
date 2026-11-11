@@ -2,7 +2,12 @@ from pathlib import Path
 
 from PIL import Image
 
-from industrial_visual_defect_detection.data import Sample, create_manifest, validate_samples, visa_samples
+from industrial_visual_defect_detection.data import (
+    Sample,
+    create_manifest,
+    validate_samples,
+    visa_samples,
+)
 
 
 def test_normal_calibration_is_deterministic_and_disjoint(tmp_path: Path):

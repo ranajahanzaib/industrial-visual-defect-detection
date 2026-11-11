@@ -23,11 +23,20 @@ from industrial_visual_defect_detection.data import (
     validate_samples,
     visa_samples,
 )
-from industrial_visual_defect_detection.evaluation import bootstrap_image_intervals, image_metrics, pixel_metrics
+from industrial_visual_defect_detection.evaluation import (
+    bootstrap_image_intervals,
+    image_metrics,
+    pixel_metrics,
+)
 from industrial_visual_defect_detection.inference import Detector
 from industrial_visual_defect_detection.reporting import write_evaluation
 from industrial_visual_defect_detection.smoke import smoke
-from industrial_visual_defect_detection.training import calibrate_patchcore, calibrate_student, fit_patchcore, train_student
+from industrial_visual_defect_detection.training import (
+    calibrate_patchcore,
+    calibrate_student,
+    fit_patchcore,
+    train_student,
+)
 from industrial_visual_defect_detection.utils import atomic_json, choose_device
 
 

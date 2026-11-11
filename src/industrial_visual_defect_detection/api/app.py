@@ -13,7 +13,11 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from PIL import Image, ImageOps, UnidentifiedImageError
 
-from industrial_visual_defect_detection.api.schemas import HealthResponse, PredictionResponse, RunSummary
+from industrial_visual_defect_detection.api.schemas import (
+    HealthResponse,
+    PredictionResponse,
+    RunSummary,
+)
 from industrial_visual_defect_detection.data import VISA_CATEGORIES, visa_samples
 from industrial_visual_defect_detection.inference import Detector
 
