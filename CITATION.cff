@@ -1,0 +1,9 @@
+cff-version: 1.2.0
+message: "If you use Industrial Visual Defect Detection in research or teaching, please cite this software and the VisA dataset paper."
+title: "Industrial Visual Defect Detection"
+version: 0.1.0
+authors:
+  - family-names: Jahanzaib
+    given-names: Rana
+repository-code: "https://github.com/ranajahanzaib/industrial-visual-defect-detection"
+license: MIT

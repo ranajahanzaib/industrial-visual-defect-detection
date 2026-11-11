@@ -1,56 +1,77 @@
-# Project Title
+# Industrial Visual Defect Detection
 
-[![GitHub license](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE) [![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-brightgreen.svg)](./CONTRIBUTING.md)
+**Train visual anomaly detectors using normal product images. Inspect unusual regions, evaluate failures, and compare compact models locally.**
 
-One-line description of what this project does and who it's for.
+Industrial Visual Defect Detection is an open-source research workbench for industrial visual inspection. It includes a PyTorch teacher–student feature-distillation detector, a ResNet18 nearest-neighbor feature-bank baseline, a VisA dataset adapter, normal-only threshold calibration, evaluation metrics, a FastAPI service, and a React inspection workbench.
 
-## Features
+> The repository does not currently include VisA data, trained weights, or benchmark results. The dashboard shows an honest setup state until a model is trained and calibrated. Anomaly scores are not probabilities; heatmaps show model discrepancy, not defect cause.
 
-- Feature one
-- Feature two
-- Feature three
+## How it works
 
-## Getting Started
+The trainable detector keeps an ImageNet-pretrained ResNet18 teacher frozen and trains a smaller depthwise-separable student to reproduce its layer1, layer2, and layer3 features on normal images. At inference, the mean multi-scale normalized feature discrepancy forms the anomaly map; the image score is the mean of its highest-scoring 1% of pixels. A held-out normal calibration partition sets the image-level quantile threshold.
 
-### Prerequisites
+The PatchCore-style baseline path uses frozen ResNet18 features and a deterministic, batch-stratified random feature-bank subset. It is a bounded random coreset variant, not the greedy k-center PatchCore algorithm. Fit it with `industrial-visual-defect-detection fit-baseline --data-root data/VisA --category pcb1 --run runs/pcb1-patchcore`, then calibrate and evaluate with the corresponding commands above. Compare evaluated runs with `industrial-visual-defect-detection compare --runs runs/pcb1-student runs/pcb1-patchcore` to produce paired metrics and visual error comparisons.
 
-List anything the user needs to have installed before they can use this project.
+## Quick start
 
-### Installation
+Python 3.11+ is required. Install the project and development tools:
 
 ```bash
-# Clone the repository
-git clone https://github.com/username/repo-name.git
-cd repo-name
-
-# Install dependencies
-# add your install command here
+python -m venv .venv
+source .venv/bin/activate
+python -m pip install -e '.[dev]'
 ```
 
-### Usage
+Use an official VisA extraction under `data/VisA`, or explicitly initiate its download (large archive; requires free disk space):
 
 ```bash
-# Add your run command here
+industrial-visual-defect-detection data download --data-root data/VisA
 ```
 
-## Contributing
+Then inspect and prepare the category:
 
-We'd love to accept your patches and contributions to this project. There are just a few guidelines you need to follow.
+```bash
+industrial-visual-defect-detection doctor
+industrial-visual-defect-detection data inspect --data-root data/VisA --category pcb1
+industrial-visual-defect-detection data prepare --data-root data/VisA --category pcb1
+industrial-visual-defect-detection train --config configs/student-pcb1.yaml
+industrial-visual-defect-detection calibrate --data-root data/VisA --category pcb1 --run runs/pcb1-student --normal-quantile 0.99
+industrial-visual-defect-detection evaluate --data-root data/VisA --category pcb1 --run runs/pcb1-student --split test
+industrial-visual-defect-detection predict --run runs/pcb1-student --image /path/to/product-image.jpg --output runs/prediction.npy
+```
 
-### [Code of Conduct](./CODE_OF_CONDUCT.md)
+The first training run may download torchvision's ResNet18 ImageNet weights. Dataset downloading is not automatic. `data prepare` writes a deterministic manifest using official train/test assignments and reserves normal training images for calibration. It does not copy or modify source data.
 
-This project follows the [Contributor Covenant](https://www.contributor-covenant.org/) as its Code of Conduct, and we expect all project participants to adhere to it. Kindly read the [full guide](./CODE_OF_CONDUCT.md) to understand what actions will not be tolerated.
+Run the API and dashboard in separate terminals:
 
-### [Contributing Guide](./CONTRIBUTING.md)
+```bash
+uvicorn industrial_visual_defect_detection.api.app:app --reload
+cd apps/web && pnpm install && pnpm run dev
+```
 
-Read our [contributing guide](./CONTRIBUTING.md) to learn about our development process, how to propose bug fixes and improvements, and how to build and test your changes to the project.
+Set `INDUSTRIAL_VISUAL_DEFECT_DETECTION_RUNS` in the API process if model runs live outside `./runs`. The API accepts image uploads up to 10 MiB. Set `VITE_API_URL` in `apps/web/.env.local` to override the dashboard's default API origin.
 
-### Issues
+## Dataset and scientific protocol
 
-Feel free to submit issues and enhancement requests. Use the template provided when creating an issue to ensure your request is clear and actionable.
+Industrial Visual Defect Detection supports the 12 VisA one-class categories: pcb1–pcb4, candle, capsules, cashew, chewinggum, fryum, macaroni1, macaroni2, and pipe_fryum. Obtain the dataset from the [official AWS registry](https://registry.opendata.aws/visa/) and follow the distributed [CC BY 4.0 license](https://creativecommons.org/licenses/by/4.0/). Cite the dataset paper, [“SPot-the-Difference Self-Supervised Pre-training for Anomaly Detection and Segmentation”](https://arxiv.org/abs/2207.14315), when reporting results. Do not commit the dataset.
 
-See the open issues for a complete list of proposed features (and known issues).
+The primary split uses only official normal training records to fit the student or baseline. A seeded subset of those normal records calibrates separate image and pixel thresholds; the official test partition remains held out. Test anomalies do not contribute to fitting or calibration. AUROC and average precision are threshold-independent; confusion metrics and segmentation metrics use their respective normal-only calibrated thresholds. A normal-only quantile is not a guarantee of future false-positive rate.
 
-## [License](./LICENSE)
+## Architecture
 
-This project is licensed under the [MIT License](./LICENSE), meaning that you're free to modify, distribute, and/or use it for any commercial or private project.
+```text
+Normal training images → frozen ResNet18 teacher ─┐
+                       → trainable compact student ├→ feature loss / student update
+                                                   └→ calibrated inference → map + score
+Normal training images → frozen ResNet18 features → bounded random memory bank
+```
+
+See [architecture](docs/architecture.md), [dataset protocol](docs/dataset.md), [training](docs/model-training.md), [evaluation](docs/evaluation.md), [reproducibility](docs/reproducibility.md), [API](docs/api.md), and [limitations](docs/limitations.md).
+
+## Data and benchmark evidence
+
+VisA images, trained weights, and benchmark results are not included. Prepare the dataset and run the documented training and evaluation workflow to generate category-specific results. Synthetic fixtures exercise software paths only; they are not evidence of industrial performance. Run `python -m pytest`, `python -m ruff check src tests`, and `python -m mypy --ignore-missing-imports src/industrial_visual_defect_detection` to validate a local installation; CI runs these checks and builds the web workbench.
+
+## License
+
+The Industrial Visual Defect Detection code is MIT licensed. VisA images and annotations remain governed by the dataset's own terms.
