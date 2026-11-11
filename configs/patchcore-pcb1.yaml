@@ -1,0 +1,21 @@
+dataset:
+  root: ./data/VisA
+  category: pcb1
+  calibration_fraction: 0.12
+model:
+  type: patchcore-style-random-memory
+  input_size: 256
+  backbone: resnet18
+  memory_bank_size: 10000
+  sampling_ratio: 0.1
+training:
+  batch_size: 8
+  workers: 0
+  seed: 42
+  device: auto
+inference:
+  score_top_fraction: 0.01
+calibration:
+  normal_quantile: 0.99
+artifacts:
+  directory: ./runs/pcb1-patchcore

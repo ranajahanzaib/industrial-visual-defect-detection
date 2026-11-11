@@ -1,0 +1,12 @@
+dataset:
+  kind: synthetic
+  count: 8
+  image_size: 64
+model:
+  type: student
+  backbone: resnet18
+training:
+  epochs: 1
+  batch_size: 2
+  seed: 42
+  device: cpu

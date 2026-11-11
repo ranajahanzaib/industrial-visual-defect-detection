@@ -1,0 +1,22 @@
+dataset:
+  root: ./data/VisA
+  category: pcb1
+  calibration_fraction: 0.12
+model:
+  type: student
+  input_size: 256
+  backbone: resnet18
+training:
+  epochs: 10
+  batch_size: 8
+  learning_rate: 0.001
+  optimizer: AdamW
+  workers: 0
+  seed: 42
+  device: auto
+inference:
+  score_top_fraction: 0.01
+calibration:
+  normal_quantile: 0.99
+artifacts:
+  directory: ./runs/pcb1-student
