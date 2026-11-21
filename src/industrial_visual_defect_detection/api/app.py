@@ -23,7 +23,19 @@ from industrial_visual_defect_detection.inference import Detector
 
 RUNS = Path(os.environ.get("INDUSTRIAL_VISUAL_DEFECT_DETECTION_RUNS", "runs"))
 app = FastAPI(title="Industrial Visual Defect Detection API", version="0.1.0")
-app.add_middleware(CORSMiddleware, allow_origins=["http://localhost:5173"], allow_methods=["GET", "POST"], allow_headers=["*"])
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+        "http://0.0.0.0:5173",
+        "http://localhost:8000",
+        "http://127.0.0.1:8000",
+    ],
+    allow_origin_regex=r"^https?://(localhost|127\.0\.0\.1)(:\d+)?$",
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 _detectors: OrderedDict[str, Detector] = OrderedDict()
 _dataset_cache: dict[str, list] = {}
 MAX_UPLOAD = 10 * 1024 * 1024
@@ -242,7 +254,7 @@ async def decode_upload(file: UploadFile) -> Image.Image:
 
 
 @app.post("/api/inference/compare")
-async def compare_inference(run_ids: list[str], file: UploadFile = File(...)) -> dict:
+async def compare_inference(run_ids: list[str] = Query(...), file: UploadFile = File(...)) -> dict:
     if len(run_ids) < 2 or len(run_ids) > 3: raise HTTPException(422, "Provide two or three run IDs")
     image = await decode_upload(file)
     results = {}

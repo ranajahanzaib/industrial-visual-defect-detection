@@ -54,3 +54,40 @@ def test_upload_size_limit(monkeypatch, tmp_path: Path):
     client = TestClient(app)
     response = client.post("/api/runs/no-run/predict", files={"file": ("big.png", b"x" * (10 * 1024 * 1024 + 1), "image/png")})
     assert response.status_code == 413
+
+
+def test_compare_inference(monkeypatch, tmp_path: Path):
+    runs = tmp_path / "runs"
+    for name in ("run-a", "run-b"):
+        run_dir = runs / name
+        run_dir.mkdir(parents=True)
+        (run_dir / "metadata.json").write_text('{"model": "stub"}')
+        (run_dir / "best.safetensors").write_bytes(b"test")
+    monkeypatch.setattr(api_module, "RUNS", runs)
+
+    class StubDetector:
+        def __init__(self, run_dir, *_):
+            self.run_name = run_dir.name
+        def predict(self, image):
+            return {
+                "score": 0.5,
+                "threshold": 0.3,
+                "pixel_threshold": 0.2,
+                "decision": "flag",
+                "latency_ms": 1.5,
+                "model": "stub",
+                "anomaly_map": np.ones((2, 2), dtype=np.float32),
+            }
+
+    monkeypatch.setattr(api_module, "Detector", StubDetector)
+    client = TestClient(app)
+    response = client.post(
+        "/api/inference/compare?run_ids=run-a&run_ids=run-b",
+        files={"file": ("image.png", _png(), "image/png")},
+    )
+    assert response.status_code == 200
+    data = response.json()
+    assert "results" in data
+    assert "run-a" in data["results"]
+    assert "run-b" in data["results"]
+
