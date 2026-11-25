@@ -1,9 +1,36 @@
 cff-version: 1.2.0
-message: "If you use Industrial Visual Defect Detection in research or teaching, please cite this software and the VisA dataset paper."
+message: "If you use Industrial Visual Defect Detection in research or teaching, please cite this software, and the VisA dataset paper."
 title: "Industrial Visual Defect Detection"
 version: 0.1.0
 authors:
-  - family-names: Jahanzaib
-    given-names: Rana
+  - family-names: Rana
+    given-names: Jahanzaib
+    orcid: "https://orcid.org/0009-0006-7085-0440"
 repository-code: "https://github.com/ranajahanzaib/industrial-visual-defect-detection"
 license: MIT
+abstract: "Industrial Visual Defect Detection provides a complete local pipeline for one-class visual defect inspection in manufacturing. It trains on normal product images only, learning to localize anomalies through multi-scale feature discrepancy and nearest-neighbor coreset embeddings."
+keywords:
+  - anomaly-detection
+  - computer-vision
+  - defect-detection
+  - feature-distillation
+  - visual-inspection
+references:
+  - type: conference-paper
+    title: "SPot-the-Difference Self-Supervised Pre-training for Anomaly Detection and Segmentation"
+    authors:
+      - family-names: Zou
+        given-names: Yang
+      - family-names: Jeong
+        given-names: Jongheon
+      - family-names: Pemula
+        given-names: Fred
+      - family-names: Zhang
+        given-names: Dongqing
+      - family-names: Onural
+        given-names: Hazim
+      - family-names: Kalita
+        given-names: Bhaskar
+    collection-title: "European Conference on Computer Vision (ECCV)"
+    year: 2022
+    url: "https://arxiv.org/abs/2207.14315"
